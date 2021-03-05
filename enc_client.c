@@ -7,6 +7,7 @@
 */
 #include "eClient.h"
 
+
 int main(int argc, char *argv[]) {
   
   // Check usage & args
@@ -32,9 +33,15 @@ int main(int argc, char *argv[]) {
   // Process Plain text and key 
   printf("CLIENT::SERVER\n");
   // load file in buffer
-  load_buffer(argv[1]);
-  // send buffer to server
-  send_buffer();
+  load_text(argv[1]);
+  // load key in buffer
+  load_key(argv[2]);
+  // send text to server
+  send_text();
+  // get return message from server
+  get_message();
+  // send key to server
+  send_key();
   // get return message from server
   get_message();
 

@@ -21,7 +21,8 @@
 */
 int socketFD, portNumber, charsWritten, charsRead;
 struct sockaddr_in serverAddress;
-char* buffer[1000];
+char* textBuffer[1000];
+char* keyBuffer[1000];
 char buffer2[256];
 
 // Error function used for reporting issues
@@ -55,9 +56,9 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber, char* hostn
 * This Function takes text in plainfile and loads it to buffer.
 // Citation: CS344 Winter 2021 Program 1
 */
-void load_buffer(char* filePath){
+void load_text(char* filePath){
   // Clear out the buffer array
-  memset(buffer, '\0', sizeof(buffer));
+  memset(textBuffer, '\0', sizeof(textBuffer));
   
   // Open the specified file for reading only
   FILE* plainFile = fopen(filePath, "r");
@@ -68,38 +69,93 @@ void load_buffer(char* filePath){
   // Process Till End of File
   while ((nread = getline(&currLine, &len, plainFile)) != -1){
     currLine[strcspn(currLine, "\n")] = '\0';
-    buffer[i] = strdup(currLine);
+    textBuffer[i] = strdup(currLine);
     i++;
   }
   // indicates end of message
   //i++;
-  buffer[i] = "@";
+  textBuffer[i] = "@";
 
   
   // Testing Buffer Load
   /*
-  for (int j=0; buffer[j]; j++)
+  for (int j=0; textBuffer[j]; j++)
   {
     printf("j = %d\n", j);
-    printf("buffer = %s\n", buffer[j]);
+    printf("textBuffer = %s\n", textBuffer[j]);
   }
   */
 }
 
 /*
-* This Function takes sends buffer to server.
+* This Function takes sends text buffer to server.
 */
-void send_buffer(void){
+void send_text(void){
   // Send message to server
   // Write to the server
-  for (int j=0; buffer[j]; j++)
+  for (int j=0; textBuffer[j]; j++)
   {
-    charsWritten = send(socketFD, buffer[j], strlen(buffer[j]), 0);
+    charsWritten = send(socketFD, textBuffer[j], strlen(textBuffer[j]), 0);
     if (charsWritten < 0)
     {
     error("CLIENT: ERROR writing to socket");
     }
-    if (charsWritten < strlen(buffer[j]))
+    if (charsWritten < strlen(textBuffer[j]))
+    {
+      printf("CLIENT: WARNING: Not all data written to socket!\n");
+    }
+  }
+}
+
+/*
+* This Function takes the key pass in and loads it to key buffer.
+// Citation: CS344 Winter 2021 Program 1
+*/
+void load_key(char* filePath){
+  // Clear out the buffer array
+  memset(keyBuffer, '\0', sizeof(keyBuffer));
+  
+  // Open the specified file for reading only
+  FILE* plainFile = fopen(filePath, "r");
+  char* currLine = NULL;
+  size_t len = 256;
+  size_t nread;
+  int i  = 0;
+  // Process Till End of File
+  while ((nread = getline(&currLine, &len, plainFile)) != -1){
+    currLine[strcspn(currLine, "\n")] = '\0';
+    keyBuffer[i] = strdup(currLine);
+    i++;
+  }
+  // indicates end of message
+  //i++;
+  keyBuffer[i] = "#";
+
+  
+  // Testing Buffer Load
+  /*
+  for (int j=0; keyBuffer[j]; j++)
+  {
+    printf("j = %d\n", j);
+    printf("keyBuffer = %s\n", keyBuffer[j]);
+  }
+  */
+}
+
+/*
+* This Function takes sends key buffer to server.
+*/
+void send_key(void){
+  // Send message to server
+  // Write to the server
+  for (int j=0; keyBuffer[j]; j++)
+  {
+    charsWritten = send(socketFD, keyBuffer[j], strlen(keyBuffer[j]), 0);
+    if (charsWritten < 0)
+    {
+    error("CLIENT: ERROR writing to socket");
+    }
+    if (charsWritten < strlen(keyBuffer[j]))
     {
       printf("CLIENT: WARNING: Not all data written to socket!\n");
     }
