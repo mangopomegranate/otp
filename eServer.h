@@ -25,6 +25,7 @@ char tempKey[256];
 char* textBuffer[1000];
 char* keyBuffer[1000];
 char* encBuffer[1000];
+char mod[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 struct sockaddr_in serverAddress, clientAddress;
 socklen_t sizeOfClientInfo = sizeof(clientAddress);
 
@@ -48,6 +49,58 @@ void setupAddressStruct(struct sockaddr_in* address, int portNumber){
   address->sin_addr.s_addr = INADDR_ANY;
 }
 
+// function that gets the integer for each allowed character
+int getMod(char letter){
+  // iterate through mod to get index of character
+  int index;
+  for (int l=0; l < sizeof(mod); l++)
+  {
+    // integer is the index of character in mod + 1 
+    if (letter == mod[l])
+    {
+      index = l;
+    }
+  }
+  return index + 1;
+}
+
+// function to encrypt text using key
+void encrypt(){
+  printf("ENCRYPT IN PROGESS\n");
+  // Take a letter from textBuffer
+  for (int m=0; textBuffer[m]; m++)
+  {
+    for (int n=0; textBuffer[m][n]; n++)
+    {
+      // stop when end character is found
+      if (textBuffer[m][n] == '@'){
+        // padd cypher message with @ for gazing end of message
+        encBuffer[m][n] = '@';
+        break;
+      }
+      // get integer value of text
+      int textMod = getMod(textBuffer[m][n]);
+      // get integer value of key
+      int keyMod = getMod(textBuffer[m][n]);
+      // sum of text and Key
+      int sumMod = textMod + keyMod;
+      // when number larger than 27
+      if ( sumMod > 27)
+      {
+        // substract 27
+        sumMod = sumMod - 27;
+      }
+      // get cipher character from mod and load it into encypted buffer
+      char cipher = mod[sumMod - 1];
+      encBuffer[m][n] = cipher;
+      printf("%c\n", encBuffer[m][n]);
+    }
+  }
+  printf("ENCRYPT COMPLETED\n");
+  return;
+}
+
+// Function handles child processes of enc_server
 void runChild(void){
   // Citation: part of code from program3 cs344 Winter2021
   int childStatus;
@@ -104,7 +157,7 @@ void runChild(void){
       }
 
       // Send a Success message back to the client
-      charsRead = send(connectionSocket, "TEXT-RECEIVED", 13, 0); 
+      charsRead = send(connectionSocket, "TEXT-RECEIVET", 13, 0); 
       if (charsRead < 0)
       {
       error("ERROR writing to socket");
@@ -128,7 +181,7 @@ void runChild(void){
           error("ERROR reading from socket");
         }
 
-        // load string to text buffer
+        // load key buffer
         keyBuffer[k] = strdup(tempKey);
         k++;
 
@@ -155,6 +208,8 @@ void runChild(void){
       error("ERROR writing to socket");
       }
       
+      encrypt();
+
       printf("SERVER: I received this from the client to encrypt:\n");
       for (int j=0; textBuffer[j]; j++)
       {
@@ -166,6 +221,13 @@ void runChild(void){
       {
         printf("%s\n", keyBuffer[j]);
       }
+
+      printf("SERVER: I am sending:\n");
+      for (int j=0; encBuffer[j]; j++)
+      {
+        printf("%s\n", encBuffer[j]);
+      }
+
     default:
       // wait for child process
       waitpid(spawnPid, &childStatus, WNOHANG);
