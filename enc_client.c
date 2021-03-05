@@ -6,7 +6,6 @@
   3. port (at which encryption server is listening)
 */
 #include "eClient.h"
-hey hey hey
 
 int main(int argc, char *argv[]) {
   
@@ -37,6 +36,7 @@ int main(int argc, char *argv[]) {
   // send buffer to server
   send_buffer();
   // get return message from server
+  get_message();
 
   // Close the socket
   close(socketFD); 

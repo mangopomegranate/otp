@@ -21,7 +21,8 @@
 */
 int socketFD, portNumber, charsWritten, charsRead;
 struct sockaddr_in serverAddress;
-char* buffer[256];
+char* buffer[1000];
+char buffer2[256];
 
 // Error function used for reporting issues
 void error(const char *msg) { 
@@ -61,17 +62,22 @@ void load_buffer(char* filePath){
   // Open the specified file for reading only
   FILE* plainFile = fopen(filePath, "r");
   char* currLine = NULL;
-  size_t len = 0;
+  size_t len = 256;
   size_t nread;
   int i  = 0;
   // Process Till End of File
   while ((nread = getline(&currLine, &len, plainFile)) != -1){
+    currLine[strcspn(currLine, "\n")] = '\0';
     buffer[i] = strdup(currLine);
     i++;
   }
+  // indicates end of message
+  //i++;
+  buffer[i] = "@";
 
-  /*
+  
   // Testing Buffer Load
+  /*
   for (int j=0; buffer[j]; j++)
   {
     printf("j = %d\n", j);
@@ -98,5 +104,22 @@ void send_buffer(void){
       printf("CLIENT: WARNING: Not all data written to socket!\n");
     }
   }
+}
+
+/*
+* This Function gets the return message from server.
+*/
+void get_message(void)
+{
+  // Get return message from server
+  // Clear out the buffer again for reuse
+  //memset(buffer, '\0', sizeof(buffer));
+  // Read data from the socket, leaving \0 at end
+  charsRead = recv(socketFD, buffer2, sizeof(buffer2) - 1, 0); 
+  if (charsRead < 0)
+  {
+  error("CLIENT: ERROR reading from socket");
+  }
+  printf("CLIENT: I received this from the server: \"%s\"\n", buffer2);
 }
 #endif
