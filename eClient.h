@@ -81,7 +81,6 @@ void load_text(char* filePath){
   //i++;
   textBuffer[i] = "@";
 
-  
   // Testing Buffer Load
   /*
   for (int j=0; textBuffer[j]; j++)
@@ -137,7 +136,6 @@ void load_key(char* filePath){
   // indicates end of message
   //i++;
   keyBuffer[i] = "#";
-
   
   // Testing Buffer Load
   /*
@@ -284,7 +282,19 @@ void printCipher(void)
 void anyError(void)
 {
   if (strcmp(tempString, "DK") == 0){
-    error("SERVER CONNECTION REJECTED", 2);
+    error("ERROR: Connection Rejected by Server", 2);
+  }
+  return;
+}
+
+// This function checks for equality in text length and key length
+void checkLen(void)
+{
+  int textLen = strlen(textBuffer[0]);
+  int keyLen = strlen(keyBuffer[0]);
+
+  if (textLen != keyLen){
+    error("ERROR: Key file shorter than Text file", 1);
   }
   return;
 }

@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
   load_text(argv[1]);
   // load key in buffer
   load_key(argv[2]);
+  checkLen();
   send_msg();
   get_message();
   anyError();
