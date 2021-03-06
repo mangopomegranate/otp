@@ -86,6 +86,7 @@ void load_text(char* filePath){
     printf("textBuffer = %s\n", textBuffer[j]);
   }
   */
+  return;
 }
 
 /*
@@ -106,6 +107,7 @@ void send_text(void){
       printf("CLIENT: WARNING: Not all data written to socket!\n");
     }
   }
+  return;
 }
 
 /*
@@ -141,6 +143,7 @@ void load_key(char* filePath){
     printf("keyBuffer = %s\n", keyBuffer[j]);
   }
   */
+  return;
 }
 
 /*
@@ -161,6 +164,27 @@ void send_key(void){
       printf("CLIENT: WARNING: Not all data written to socket!\n");
     }
   }
+  return;
+}
+
+/*
+* This Function send message to sever stating that it is waiting on encryption.
+*/
+void send_msg(void){
+  // Send message to server
+  // Write to the server
+  char* msg = "CIPHER";
+
+  charsWritten = send(socketFD, msg, strlen(msg), 0);
+  if (charsWritten < 0)
+  {
+  error("CLIENT: ERROR writing to socket");
+  }
+  if (charsWritten < strlen(msg))
+  {
+    printf("CLIENT: WARNING: Not all data written to socket!\n");
+  }
+  return;
 }
 
 /*
@@ -172,7 +196,7 @@ void get_message(void)
   // Clear out the buffer again for reuse
   memset(tempString, '\0', sizeof(tempString));
   // Read data from the socket, leaving \0 at end
-  charsRead = recv(socketFD, tempString, 255, 0); 
+  charsRead = recv(socketFD, tempString, sizeof(tempString), 0); 
   if (charsRead < 0)
   {
   error("CLIENT: ERROR reading from socket");
@@ -181,7 +205,6 @@ void get_message(void)
   return;
 }
 
-/*
 // Function that gets plain text from client
 void getCipher(void)
 {
@@ -198,7 +221,7 @@ void getCipher(void)
     charsRead = recv(socketFD, tempString, 255, 0);
     if (charsRead < 0)
     {
-      error("ERROR reading from socket");
+      error("ERROR1 reading from socket");
     }
 
     // load string to text buffer
@@ -219,8 +242,14 @@ void getCipher(void)
       textBuffer[i] = '\0';
       break;
     }
-  }	
+  }
+  // Testing Buffer Load
+  
+  for (int j=0; textBuffer[j]; j++)
+  {
+    printf("j = %d\n", j);
+    printf("textBuffer = %s\n", textBuffer[j]);
+  }
   return;
 }
-*/
 #endif

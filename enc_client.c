@@ -44,7 +44,13 @@ int main(int argc, char *argv[]) {
   send_key();
   // get return message from server
   get_message();
-
+  // send message to server
+  // let server know that client is ready for cipher
+  send_msg();
+  // get return message from server
+  //get_message();
+  getCipher();
+  
   // Close the socket
   close(socketFD); 
   return 0;
