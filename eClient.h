@@ -244,12 +244,34 @@ void getCipher(void)
     }
   }
   // Testing Buffer Load
-  
+  /*
   for (int j=0; textBuffer[j]; j++)
   {
     printf("j = %d\n", j);
     printf("textBuffer = %s\n", textBuffer[j]);
   }
+  */
   return;
 }
+
+// function prints the Cipher text to stdout
+void printCipher(void)
+{
+  for (int m=0; textBuffer[m]; m++)
+  {
+    for (int n=0; textBuffer[m][n]; n++)
+    {
+      // stop when end character is found
+      if (textBuffer[m][n] == '@'){
+        break;
+      }
+      // print each character
+      printf("%c", textBuffer[m][n]);
+    }
+  }
+  // add new line at the end
+  printf("\n");
+  return;
+}
+
 #endif

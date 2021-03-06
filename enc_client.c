@@ -47,9 +47,13 @@ int main(int argc, char *argv[]) {
   // send message to server
   // let server know that client is ready for cipher
   send_msg();
-  // get return message from server
-  //get_message();
+  // get cipher server
   getCipher();
+  // send something else to end cypher loading
+  // helps with large files
+  send_msg();
+  // print encoded message to stdout
+  printCipher();
   
   // Close the socket
   close(socketFD); 

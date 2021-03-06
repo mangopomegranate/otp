@@ -85,6 +85,21 @@ void sendCipher(void){
   return;
 }
 
+void getMsg2(void){
+  // clear out storage string
+  memset(clientMsg, '\0', 6);
+  // receive from client on socket
+  // store in tempKey
+  charsRead = recv(connectionSocket, clientMsg, 5, 0);
+
+  if (charsRead < 0)
+  {
+    error("ERROR reading from socket");
+  }
+  // send the cipher to client
+  //sendCipher();
+  return;
+}
 
 // Function receives a message from client to send cipher and does so
 void getMsg(void){
@@ -267,6 +282,9 @@ void runChild(void){
 
       // receive indication from client that it is ready for cipher and send it.
       getMsg();
+      // dummy function to end cipher exchange
+      // helpful for large datafile
+      getMsg2();
 
     default:
       // wait for child process
