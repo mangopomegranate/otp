@@ -21,9 +21,10 @@
 */
 int socketFD, portNumber, charsWritten, charsRead;
 struct sockaddr_in serverAddress;
+char tempString[256];
 char* textBuffer[1000];
 char* keyBuffer[1000];
-char buffer2[256];
+//char buffer2[256];
 
 // Error function used for reporting issues
 void error(const char *msg) { 
@@ -169,13 +170,57 @@ void get_message(void)
 {
   // Get return message from server
   // Clear out the buffer again for reuse
-  //memset(buffer, '\0', sizeof(buffer));
+  memset(tempString, '\0', sizeof(tempString));
   // Read data from the socket, leaving \0 at end
-  charsRead = recv(socketFD, buffer2, sizeof(buffer2) - 1, 0); 
+  charsRead = recv(socketFD, tempString, 255, 0); 
   if (charsRead < 0)
   {
   error("CLIENT: ERROR reading from socket");
   }
-  printf("CLIENT: I received this from the server: \"%s\"\n", buffer2);
+  printf("CLIENT: I received this from the server: \"%s\"\n", tempString);
+  return;
 }
+
+/*
+// Function that gets plain text from client
+void getCipher(void)
+{
+  // Read the client's message from the socket until termination signal is received
+  // to index into text buffer
+  int i = 0;
+  // continue until broken
+  while (1)
+  {
+    // clear out storage string
+    memset(tempString, '\0', 256);
+    // receive from client on socket
+    // store in tempString
+    charsRead = recv(socketFD, tempString, 255, 0);
+    if (charsRead < 0)
+    {
+      error("ERROR reading from socket");
+    }
+
+    // load string to text buffer
+    textBuffer[i] = strdup(tempString);
+    i++;
+
+    // to handle termination of client data
+        
+    // store length of tempString
+    int tempLen = strlen(tempString);
+    // find @ in tempString
+    // if present test != tempLen
+    int test = strcspn(tempString, "@");
+
+    // break loop when termination found
+    if (tempLen != test)
+    {
+      textBuffer[i] = '\0';
+      break;
+    }
+  }	
+  return;
+}
+*/
 #endif
