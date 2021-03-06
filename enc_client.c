@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   // Create a socket
   socketFD = socket(AF_INET, SOCK_STREAM, 0); 
   if (socketFD < 0){
-    error("CLIENT: ERROR opening socket");
+    error("CLIENT: ERROR opening socket", 2);
   }
 
    // Set up the server address struct
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
   // Connect to server
   if (connect(socketFD, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0){
-    error("CLIENT: ERROR connecting");
+    error("CLIENT: ERROR connecting", 2);
   }
 
   // Process Plain text and key 
@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
   load_text(argv[1]);
   // load key in buffer
   load_key(argv[2]);
+  send_msg();
+  get_message();
+  anyError();
   // send text to server
   send_text();
   // get return message from server

@@ -27,9 +27,13 @@ char* keyBuffer[1000];
 //char buffer2[256];
 
 // Error function used for reporting issues
-void error(const char *msg) { 
-  perror(msg); 
-  exit(0); 
+void error(const char *msg, int stat) {
+  // print to stderr
+  // Citation:
+  // https://stackoverflow.com/questions/39002052/how-i-can-print-to-stderr-in-c 
+  fprintf(stderr, "%s\n", msg);
+  //perror(msg); 
+  exit(stat); 
 }
 
 // Set up the address struct
@@ -100,7 +104,7 @@ void send_text(void){
     charsWritten = send(socketFD, textBuffer[j], strlen(textBuffer[j]), 0);
     if (charsWritten < 0)
     {
-    error("CLIENT: ERROR writing to socket");
+    error("CLIENT: ERROR writing to socket", 2);
     }
     if (charsWritten < strlen(textBuffer[j]))
     {
@@ -157,7 +161,7 @@ void send_key(void){
     charsWritten = send(socketFD, keyBuffer[j], strlen(keyBuffer[j]), 0);
     if (charsWritten < 0)
     {
-    error("CLIENT: ERROR writing to socket");
+    error("CLIENT: ERROR writing to socket", 2);
     }
     if (charsWritten < strlen(keyBuffer[j]))
     {
@@ -178,7 +182,7 @@ void send_msg(void){
   charsWritten = send(socketFD, msg, strlen(msg), 0);
   if (charsWritten < 0)
   {
-  error("CLIENT: ERROR writing to socket");
+  error("CLIENT: ERROR writing to socket", 2);
   }
   if (charsWritten < strlen(msg))
   {
@@ -186,6 +190,7 @@ void send_msg(void){
   }
   return;
 }
+
 
 /*
 * This Function gets the return message from server.
@@ -199,7 +204,7 @@ void get_message(void)
   charsRead = recv(socketFD, tempString, sizeof(tempString), 0); 
   if (charsRead < 0)
   {
-  error("CLIENT: ERROR reading from socket");
+  error("CLIENT: ERROR reading from socket", 2);
   }
   printf("CLIENT: I received this from the server: \"%s\"\n", tempString);
   return;
@@ -221,7 +226,7 @@ void getCipher(void)
     charsRead = recv(socketFD, tempString, 255, 0);
     if (charsRead < 0)
     {
-      error("ERROR1 reading from socket");
+      error("ERROR1 reading from socket", 2);
     }
 
     // load string to text buffer
@@ -274,4 +279,13 @@ void printCipher(void)
   return;
 }
 
+
+// This function checks for identification error
+void anyError(void)
+{
+  if (strcmp(tempString, "DK") == 0){
+    error("SERVER CONNECTION REJECTED", 2);
+  }
+  return;
+}
 #endif

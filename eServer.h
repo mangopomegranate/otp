@@ -85,19 +85,24 @@ void sendCipher(void){
   return;
 }
 
+// function handles client identification with code name CIPHER
 void getMsg2(void){
   // clear out storage string
   memset(clientMsg, '\0', 6);
   // receive from client on socket
   // store in tempKey
-  charsRead = recv(connectionSocket, clientMsg, 5, 0);
-
+  charsRead = recv(connectionSocket, clientMsg, 6, 0);
+  // reject client if code does not match
+  if (strcmp(clientMsg, "CIPHER")!= 0){
+    sendMessage("DK");
+    return;
+  }
   if (charsRead < 0)
   {
     error("ERROR reading from socket");
   }
   // send the cipher to client
-  //sendCipher();
+  sendMessage("OK");
   return;
 }
 
@@ -107,8 +112,7 @@ void getMsg(void){
   memset(clientMsg, '\0', 6);
   // receive from client on socket
   // store in tempKey
-  charsRead = recv(connectionSocket, clientMsg, 5, 0);
-
+  charsRead = recv(connectionSocket, clientMsg, 6, 0);
   if (charsRead < 0)
   {
     error("ERROR reading from socket");
@@ -271,6 +275,7 @@ void runChild(void){
     case 0:
       // indicate to the user that a connection has been established
       printf("SERVER: Connected to client running at host %d port %d\n", ntohs(clientAddress.sin_addr.s_addr), ntohs(clientAddress.sin_port));
+      getMsg2();
       // Get the plain text from the client
       getText();
       
@@ -278,7 +283,7 @@ void runChild(void){
       getKey();
       
       // replace text Buffer with encrypted message
-      encrypt();
+      //encrypt();
 
       // receive indication from client that it is ready for cipher and send it.
       getMsg();
