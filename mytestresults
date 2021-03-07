@@ -23,7 +23,7 @@ Error: key 'key20' is too short
 #-----------------------------------------
 #enc_client plaintext1 key70000 $encport
 #20 POINTS: Should return encrypted version of plaintext1
-GXZDPO KAVVAWAJHOSKYWSIPDKUIUQIAQBH 
+CCIUZFQEFILETJXDGJMHBSFQT CYELYWFBDK
 
 #-----------------------------------------
 #enc_client plaintext1 key70000 $encport > ciphertext1
@@ -39,12 +39,12 @@ ciphertext1 exists!
 
 #-----------------------------------------
 #5 POINTS: ciphertext1 should look encrypted
-GXZDPO KAVVAWAJHOSKYWSIPDKUIUQIAQBH 
+CCIUZFQEFILETJXDGJMHBSFQT CYELYWFBDK
 
 #-----------------------------------------
 #dec_client ciphertext1 key70000 $encport
 #5 POINTS: Should fail giving error that dec_client cannot use enc_server
-Error: could not contact dec_server on port 57173
+Error: could not contact dec_server on port 57174
 #-----------------------------------------
 #20 POINTS: should return decrypted ciphertext1 that matches source
 #cat plaintext1
@@ -68,35 +68,33 @@ plaintext1_a exists!
 #5 POINTS: Should be only one error about plaintext5 being bad
 Ten second sleep, your program must complete in this time
 enc_client error: input contains bad characters
-total 412
-drwxr-xr-x 1 runner runner   630 Mar  7 19:11 ./
-drwxrwxrwx 1 runner runner     0 Mar  7 18:01 ../
--rw-r--r-- 1 runner runner    37 Mar  7 19:11 ciphertext1
--rw-r--r-- 1 runner runner   317 Mar  7 19:11 ciphertext2
--rw-r--r-- 1 runner runner    17 Mar  7 19:11 ciphertext3
--rw-r--r-- 1 runner runner 69333 Mar  7 19:11 ciphertext4
--rw-r--r-- 1 runner runner     0 Mar  7 19:11 ciphertext5
+total 404
+drwxr-xr-x 1 runner runner   608 Mar  7 19:29 ./
+drwxrwxrwx 1 runner runner    26 Mar  7 19:23 ../
+-rw-r--r-- 1 runner runner    37 Mar  7 19:29 ciphertext1
+-rw-r--r-- 1 runner runner   317 Mar  7 19:29 ciphertext2
+-rw-r--r-- 1 runner runner    17 Mar  7 19:29 ciphertext3
+-rw-r--r-- 1 runner runner 69333 Mar  7 19:29 ciphertext4
+-rw-r--r-- 1 runner runner     0 Mar  7 19:29 ciphertext5
+-rwxr-xr-x 1 runner runner   158 Mar  7 19:22 compileall
 -rw-r--r-- 1 runner runner  8328 Mar  7 19:09 dClient.h
--rwxr-xr-x 1 runner runner 18240 Mar  7 19:11 dec_client
--rw-r--r-- 1 runner runner  1724 Mar  7 19:08 dec_client.c
--rwxr-xr-x 1 runner runner 14112 Mar  7 19:11 dec_server
+-rwxr-xr-x 1 runner runner 18240 Mar  7 19:28 dec_client
+-rw-r--r-- 1 runner runner  1724 Mar  7 19:27 dec_client.c
+-rwxr-xr-x 1 runner runner 14112 Mar  7 19:28 dec_server
 -rw-r--r-- 1 runner runner  1574 Mar  7 01:05 dec_server.c
--rw-r--r-- 1 runner runner  7462 Mar  7 18:46 dServer.h
+-rw-r--r-- 1 runner runner  7462 Mar  7 19:27 dServer.h
 -rw-r--r-- 1 runner runner  8363 Mar  7 19:10 eClient.h
--rwxr-xr-x 1 runner runner 18240 Mar  7 19:11 enc_client
--rw-r--r-- 1 runner runner  1735 Mar  7 19:10 enc_client.c
--rwxr-xr-x 1 runner runner 14112 Mar  7 19:11 enc_server
+-rwxr-xr-x 1 runner runner 18240 Mar  7 19:28 enc_client
+-rw-r--r-- 1 runner runner  1735 Mar  7 19:27 enc_client.c
+-rwxr-xr-x 1 runner runner 14112 Mar  7 19:28 enc_server
 -rw-r--r-- 1 runner runner  1573 Mar  7 01:05 enc_server.c
--rw-r--r-- 1 runner runner  7505 Mar  7 18:46 eServer.h
--rw-r--r-- 1 runner runner    21 Mar  7 19:11 key20
--rw-r--r-- 1 runner runner 70001 Mar  7 19:11 key70000
--rwxr-xr-x 1 runner runner  8592 Mar  7 19:11 keygen
+-rw-r--r-- 1 runner runner  7505 Mar  7 19:27 eServer.h
+-rw-r--r-- 1 runner runner    21 Mar  7 19:29 key20
+-rw-r--r-- 1 runner runner 70001 Mar  7 19:29 key70000
+-rwxr-xr-x 1 runner runner  8592 Mar  7 19:28 keygen
 -rw-r--r-- 1 runner runner   685 Mar  6 20:40 keygen.c
 -rw-r--r-- 1 runner runner     0 Mar  3 00:13 main.c
--rw-r--r-- 1 runner runner    11 Mar  7 18:24 mykey
--rw-r--r-- 1 runner runner  1025 Mar  7 18:19 mykey2
--rw-r--r-- 1 runner runner    11 Mar  7 18:25 myshortkey
--rw-r--r-- 1 runner runner  2485 Mar  7 19:11 mytestresults
+-rw-r--r-- 1 runner runner  2485 Mar  7 19:29 mytestresults
 -rwxr-xr-x 1 runner runner  5388 Mar  7 18:05 p5testscript
 -rw-r--r-- 1 runner runner    37 Mar  7 18:18 plaintext1
 -rw-r--r-- 1 runner runner   317 Mar  7 18:05 plaintext2
@@ -108,50 +106,48 @@ drwxrwxrwx 1 runner runner     0 Mar  7 18:01 ../
 #-----------------------------------------
 #15 POINTS: concurrent test of decryption - look for 4 plaintext#_a files that match the plaintext# files
 #Ten second sleep, your program must complete in this time
-total 496
-drwxr-xr-x 1 runner runner   726 Mar  7 19:11 ./
-drwxrwxrwx 1 runner runner     0 Mar  7 18:01 ../
--rw-r--r-- 1 runner runner    37 Mar  7 19:11 ciphertext1
--rw-r--r-- 1 runner runner   317 Mar  7 19:11 ciphertext2
--rw-r--r-- 1 runner runner    17 Mar  7 19:11 ciphertext3
--rw-r--r-- 1 runner runner 69333 Mar  7 19:11 ciphertext4
--rw-r--r-- 1 runner runner     0 Mar  7 19:11 ciphertext5
+total 488
+drwxr-xr-x 1 runner runner   704 Mar  7 19:29 ./
+drwxrwxrwx 1 runner runner    26 Mar  7 19:23 ../
+-rw-r--r-- 1 runner runner    37 Mar  7 19:29 ciphertext1
+-rw-r--r-- 1 runner runner   317 Mar  7 19:29 ciphertext2
+-rw-r--r-- 1 runner runner    17 Mar  7 19:29 ciphertext3
+-rw-r--r-- 1 runner runner 69333 Mar  7 19:29 ciphertext4
+-rw-r--r-- 1 runner runner     0 Mar  7 19:29 ciphertext5
+-rwxr-xr-x 1 runner runner   158 Mar  7 19:22 compileall
 -rw-r--r-- 1 runner runner  8328 Mar  7 19:09 dClient.h
--rwxr-xr-x 1 runner runner 18240 Mar  7 19:11 dec_client
--rw-r--r-- 1 runner runner  1724 Mar  7 19:08 dec_client.c
--rwxr-xr-x 1 runner runner 14112 Mar  7 19:11 dec_server
+-rwxr-xr-x 1 runner runner 18240 Mar  7 19:28 dec_client
+-rw-r--r-- 1 runner runner  1724 Mar  7 19:27 dec_client.c
+-rwxr-xr-x 1 runner runner 14112 Mar  7 19:28 dec_server
 -rw-r--r-- 1 runner runner  1574 Mar  7 01:05 dec_server.c
--rw-r--r-- 1 runner runner  7462 Mar  7 18:46 dServer.h
+-rw-r--r-- 1 runner runner  7462 Mar  7 19:27 dServer.h
 -rw-r--r-- 1 runner runner  8363 Mar  7 19:10 eClient.h
--rwxr-xr-x 1 runner runner 18240 Mar  7 19:11 enc_client
--rw-r--r-- 1 runner runner  1735 Mar  7 19:10 enc_client.c
--rwxr-xr-x 1 runner runner 14112 Mar  7 19:11 enc_server
+-rwxr-xr-x 1 runner runner 18240 Mar  7 19:28 enc_client
+-rw-r--r-- 1 runner runner  1735 Mar  7 19:27 enc_client.c
+-rwxr-xr-x 1 runner runner 14112 Mar  7 19:28 enc_server
 -rw-r--r-- 1 runner runner  1573 Mar  7 01:05 enc_server.c
--rw-r--r-- 1 runner runner  7505 Mar  7 18:46 eServer.h
--rw-r--r-- 1 runner runner    21 Mar  7 19:11 key20
--rw-r--r-- 1 runner runner 70001 Mar  7 19:11 key70000
--rwxr-xr-x 1 runner runner  8592 Mar  7 19:11 keygen
+-rw-r--r-- 1 runner runner  7505 Mar  7 19:27 eServer.h
+-rw-r--r-- 1 runner runner    21 Mar  7 19:29 key20
+-rw-r--r-- 1 runner runner 70001 Mar  7 19:29 key70000
+-rwxr-xr-x 1 runner runner  8592 Mar  7 19:28 keygen
 -rw-r--r-- 1 runner runner   685 Mar  6 20:40 keygen.c
 -rw-r--r-- 1 runner runner     0 Mar  3 00:13 main.c
--rw-r--r-- 1 runner runner    11 Mar  7 18:24 mykey
--rw-r--r-- 1 runner runner  1025 Mar  7 18:19 mykey2
--rw-r--r-- 1 runner runner    11 Mar  7 18:25 myshortkey
--rw-r--r-- 1 runner runner  4669 Mar  7 19:11 mytestresults
+-rw-r--r-- 1 runner runner  4564 Mar  7 19:29 mytestresults
 -rwxr-xr-x 1 runner runner  5388 Mar  7 18:05 p5testscript
 -rw-r--r-- 1 runner runner    37 Mar  7 18:18 plaintext1
--rw-r--r-- 1 runner runner    37 Mar  7 19:11 plaintext1_a
+-rw-r--r-- 1 runner runner    37 Mar  7 19:29 plaintext1_a
 -rw-r--r-- 1 runner runner   317 Mar  7 18:05 plaintext2
--rw-r--r-- 1 runner runner   317 Mar  7 19:11 plaintext2_a
+-rw-r--r-- 1 runner runner   317 Mar  7 19:29 plaintext2_a
 -rw-r--r-- 1 runner runner    17 Mar  7 18:05 plaintext3
--rw-r--r-- 1 runner runner    17 Mar  7 19:11 plaintext3_a
+-rw-r--r-- 1 runner runner    17 Mar  7 19:29 plaintext3_a
 -rw-r--r-- 1 runner runner 69333 Mar  7 18:05 plaintext4
--rw-r--r-- 1 runner runner 69333 Mar  7 19:11 plaintext4_a
+-rw-r--r-- 1 runner runner 69333 Mar  7 19:29 plaintext4_a
 -rw-r--r-- 1 runner runner    42 Mar  7 18:05 plaintext5
 -rw-r--r-- 1 runner runner   146 Mar  7 19:03 .replit
 
 #-----------------------------------------
 #Cleaning up - ignore Operation Not Permitted errors
-./p5testscript: line 141:  1477 Terminated              ./dec_server $decport
-./p5testscript: line 143:  1476 Terminated              ./enc_server $encport
+./p5testscript: line 141:  1747 Terminated              ./dec_server $decport
+./p5testscript: line 143:  1746 Terminated              ./enc_server $encport
 
 #SCRIPT COMPLETE
