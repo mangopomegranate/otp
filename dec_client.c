@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Process Plain text and key 
-  fprintf(stderr, "CLIENT::SERVER\n");
+  //fprintf(stderr, "CLIENT::SERVER\n");
   // load file in buffer
   load_text(argv[1]);
   // check if characters in text are valid
@@ -37,12 +37,12 @@ int main(int argc, char *argv[]) {
   // load key in buffer
   load_key(argv[2]);
   // check if key and text file have equal length
-  checkLen();
+  checkLen(argv[2]);
   // send and receive identifier
   send_msg();
   get_message();
   // handle when server rejects client
-  anyError();
+  anyError(argv[3]);
   // send text to server
   send_text();
   // get return message from server

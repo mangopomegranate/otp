@@ -205,7 +205,7 @@ void get_message(void)
   {
   error("CLIENT: ERROR reading from socket", 2);
   }
-  fprintf(stderr, "CLIENT: I received this from the server: \"%s\"\n", tempString);
+  //fprintf(stderr, "CLIENT: I received this from the server: \"%s\"\n", tempString);
   return;
 }
 
@@ -280,22 +280,26 @@ void printCipher(void)
 
 
 // This function checks for identification error
-void anyError(void)
+void anyError(char* port)
 {
   if (strcmp(tempString, "DK") == 0){
-    error("ERROR: Connection Rejected by Server", 2);
+    fprintf(stderr, "Error: could not contact enc_server on port %s", port);
+    exit(2);
+    //error("ERROR: Connection Rejected by Server", 2);
   }
   return;
 }
 
 // This function checks for equality in text length and key length
-void checkLen(void)
+void checkLen(char* filePath)
 {
   int textLen = strlen(textBuffer[0]);
   int keyLen = strlen(keyBuffer[0]);
 
   if (textLen > keyLen){
-    error("ERROR: Key file shorter than Text file", 1);
+    fprintf(stderr, "Error: key \'%s\' is too short", filePath);
+    exit(1);
+    //error("ERROR: Key file shorter than Text file", 1);
   }
   return;
 }
@@ -336,7 +340,7 @@ void checkChar(void)
 
       if (checkChar == -1)
       {
-        error("ERROR: Invalid Characters in Input File", 1);
+        error("enc_client error: input contains bad characters", 1);
       }
     }
   }

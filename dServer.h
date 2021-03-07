@@ -276,7 +276,7 @@ void runChild(void){
     // Child process Success
     case 0:
       // indicate to the user that a connection has been established
-      fprintf(stderr, "SERVER: Connected to client running at host %d port %d\n", ntohs(clientAddress.sin_addr.s_addr), ntohs(clientAddress.sin_port));
+      //fprintf(stderr, "SERVER: Connected to client running at host %d port %d\n", ntohs(clientAddress.sin_addr.s_addr), ntohs(clientAddress.sin_port));
       getMsg2();
       // Get the plain text from the client
       getText();
