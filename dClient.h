@@ -294,7 +294,7 @@ void checkLen(void)
   int textLen = strlen(textBuffer[0]);
   int keyLen = strlen(keyBuffer[0]);
 
-  if (textLen != keyLen){
+  if (textLen > keyLen){
     error("ERROR: Key file shorter than Text file", 1);
   }
   return;
