@@ -286,7 +286,7 @@ void runChild(void){
       getKey();
       
       // replace text Buffer with encrypted message
-      //encrypt();
+      encrypt();
 
       // receive indication from client that it is ready for cipher and send it.
       getMsg();

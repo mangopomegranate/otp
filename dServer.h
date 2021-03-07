@@ -226,8 +226,8 @@ int getMod(char letter){
   return index + 1;
 }
 
-// function to encrypt text using key
-void encrypt(){
+// function to decrypt text using key
+void decrypt(){
   // Take a letter from textBuffer
   for (int m=0; textBuffer[m]; m++)
   {
@@ -239,19 +239,18 @@ void encrypt(){
         textBuffer[m][n] = '@';
         break;
       }
-      // get integer value of text
+      // get integer value of code
       int textMod = getMod(textBuffer[m][n]);
       // get integer value of key
       int keyMod = getMod(keyBuffer[m][n]);
-      
-      // sum of text and Key
-      int sumMod = textMod + keyMod;
-      
-      // when number larger than 27
-      if (sumMod > 27)
+
+      // difference of code and Key
+      int sumMod = textMod - keyMod;
+      // when number is negative
+      if (sumMod <= 0)
       {
-        // substract 27
-        sumMod = sumMod - 27;
+        // add 27
+        sumMod = sumMod + 27;
       }
       // get cipher character from mod and replace it in text buffer
       char cipher = mod[sumMod - 1];
@@ -286,7 +285,7 @@ void runChild(void){
       getKey();
       
       // replace text Buffer with encrypted message
-      //encrypt();
+      decrypt();
 
       // receive indication from client that it is ready for cipher and send it.
       getMsg();
