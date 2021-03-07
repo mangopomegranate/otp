@@ -29,10 +29,13 @@ char mod[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 struct sockaddr_in serverAddress, clientAddress;
 socklen_t sizeOfClientInfo = sizeof(clientAddress);
 
-// Error function used for reporting issues
-void error(const char *msg) {
-  perror(msg);
-  exit(1);
+void error(const char *msg, int stat) {
+  // print to stderr
+  // Citation:
+  // https://stackoverflow.com/questions/39002052/how-i-can-print-to-stderr-in-c 
+  fprintf(stderr, "%s\n", msg);
+  //perror(msg); 
+  exit(stat); 
 } 
 
 // Set up the address struct for the server socket
@@ -58,7 +61,7 @@ void sendMessage(char* msg){
   charsRead = send(connectionSocket, message, msgLen, 0); 
   if (charsRead < 0)
   {
-  error("ERROR writing to socket");
+  error("ERROR writing to socket", 2);
   }
   charsRead = 0;
   return;
@@ -75,11 +78,11 @@ void sendCipher(void){
     charsRead = send(connectionSocket, textBuffer[j], strlen(textBuffer[j]), 0);
     if (charsRead < 0)
     {
-    error("Server: ERROR writing to socket");
+    error("Server: ERROR writing to socket", 2);
     }
     if (charsRead < strlen(textBuffer[j]))
     {
-      printf("Server: WARNING: Not all data written to socket!\n");
+      fprintf(stderr, "Server: WARNING: Not all data written to socket!\n");
     }
   }
   return;
@@ -99,7 +102,7 @@ void getMsg2(void){
   }
   if (charsRead < 0)
   {
-    error("ERROR reading from socket");
+    error("ERROR reading from socket", 2);
   }
   // send the cipher to client
   sendMessage("OK");
@@ -115,7 +118,7 @@ void getMsg(void){
   charsRead = recv(connectionSocket, clientMsg, 6, 0);
   if (charsRead < 0)
   {
-    error("ERROR reading from socket");
+    error("ERROR reading from socket", 2);
   }
   // send the cipher to client
   sendCipher();
@@ -138,7 +141,7 @@ void getText(void)
     charsRead = recv(connectionSocket, tempString, 255, 0);
     if (charsRead < 0)
     {
-      error("ERROR reading from socket");
+      error("ERROR reading from socket", 2);
     }
 
     // load string to text buffer
@@ -181,7 +184,7 @@ void getKey(void)
     charsRead = recv(connectionSocket, tempKey, 255, 0);
     if (charsRead < 0)
     {
-      error("ERROR reading from socket");
+      error("ERROR reading from socket", 2);
     }
 
     // load key buffer
@@ -274,7 +277,7 @@ void runChild(void){
     // Child process Success
     case 0:
       // indicate to the user that a connection has been established
-      printf("SERVER: Connected to client running at host %d port %d\n", ntohs(clientAddress.sin_addr.s_addr), ntohs(clientAddress.sin_port));
+      fprintf(stderr, "SERVER: Connected to client running at host %d port %d\n", ntohs(clientAddress.sin_addr.s_addr), ntohs(clientAddress.sin_port));
       getMsg2();
       // Get the plain text from the client
       getText();

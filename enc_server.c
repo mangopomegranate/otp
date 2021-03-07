@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
   // Create the socket that will listen for connections
   int listenSocket = socket(AF_INET, SOCK_STREAM, 0);
   if (listenSocket < 0) {
-    error("ERROR opening socket");
+    error("ERROR opening socket", 2);
   }
 
   // Set up the address struct for the server socket
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
 
   // Associate the socket to the port
   if (bind(listenSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0){
-    error("ERROR on binding");
+    error("ERROR on binding", 2);
   }
 
   // Start listening for connetions. Allow up to 5 connections to queue up
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
     connectionSocket = accept(listenSocket, (struct sockaddr *)&clientAddress, &sizeOfClientInfo); 
     
     if (connectionSocket < 0){
-      error("ERROR on accept");
+      error("ERROR on accept", 2);
     }
     // Handout: use a separate process to handle the rest of the servicing for the client connection
     runChild();

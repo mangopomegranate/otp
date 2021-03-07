@@ -24,6 +24,7 @@ struct sockaddr_in serverAddress;
 char tempString[256];
 char* textBuffer[1000];
 char* keyBuffer[1000];
+char mod[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 //char buffer2[256];
 
 // Error function used for reporting issues
@@ -107,7 +108,7 @@ void send_text(void){
     }
     if (charsWritten < strlen(textBuffer[j]))
     {
-      printf("CLIENT: WARNING: Not all data written to socket!\n");
+      fprintf(stderr, "CLIENT: WARNING: Not all data written to socket!\n");
     }
   }
   return;
@@ -163,7 +164,7 @@ void send_key(void){
     }
     if (charsWritten < strlen(keyBuffer[j]))
     {
-      printf("CLIENT: WARNING: Not all data written to socket!\n");
+      fprintf(stderr, "CLIENT: WARNING: Not all data written to socket!\n");
     }
   }
   return;
@@ -184,7 +185,7 @@ void send_msg(void){
   }
   if (charsWritten < strlen(msg))
   {
-    printf("CLIENT: WARNING: Not all data written to socket!\n");
+    fprintf(stderr, "CLIENT: WARNING: Not all data written to socket!\n");
   }
   return;
 }
@@ -204,7 +205,7 @@ void get_message(void)
   {
   error("CLIENT: ERROR reading from socket", 2);
   }
-  printf("CLIENT: I received this from the server: \"%s\"\n", tempString);
+  fprintf(stderr, "CLIENT: I received this from the server: \"%s\"\n", tempString);
   return;
 }
 
@@ -295,6 +296,49 @@ void checkLen(void)
 
   if (textLen != keyLen){
     error("ERROR: Key file shorter than Text file", 1);
+  }
+  return;
+}
+
+
+// This function checks if a char is valid (i.e., is in mod array)
+int getIndex(char letter){
+  // iterate through mod to get index of character
+  int index = -1;
+  for (int l=0; l < sizeof(mod); l++)
+  {
+    // if letter in mod then return the letter's index in mod and break out of loop (not need to iterate once a letter is found to be in mod) 
+    if (letter == mod[l])
+    {
+      index = l;
+      break;
+    }
+  }
+  // index will remain -1 if a character is not part of mod
+  return index;
+}
+
+// This function rejects text with invalid characters
+void checkChar(void)
+{
+  for (int m=0; textBuffer[m]; m++)
+  {
+    for (int n=0; textBuffer[m][n]; n++)
+    {
+      // stop when end character is found
+      if (textBuffer[m][n] == '@')
+      {
+        break;
+      }
+      
+      // valid char will have checkChar >= 0
+      int checkChar = getIndex(textBuffer[m][n]);
+
+      if (checkChar == -1)
+      {
+        error("ERROR: Invalid Characters in Input File", 1);
+      }
+    }
   }
   return;
 }
