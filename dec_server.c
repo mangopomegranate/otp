@@ -1,8 +1,8 @@
 /*
-* This Program sets up a server that obtains data from a specific client (enc_client) (ID: CIPHER).
-* It provides encryption services to client.
+* This Program sets up a server that obtains data from a specific client (dec_client) (ID: DIPHER).
+* It provides dencryption services to client.
 */
-#include "eServer.h"
+#include "dServer.h"
 
 int main(int argc, char *argv[]){
   
